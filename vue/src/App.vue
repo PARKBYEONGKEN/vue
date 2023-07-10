@@ -15,14 +15,15 @@
           </tr>
         </tbody>
       </div>
-      <div>
-        <tbody>
+      <div class="table_bottom" style="margin:20px auto; width:100%; height: 60px;">
+        <tbody style="vertical-align: middle;">
           <tr>
-            <td>상의</td>
-            <td>하의</td>
-            <td>아우터</td>
-            <td>신상</td>
-            <td>악세사리</td>
+            <td>전체보기</td>
+            <td><router-link to="/">상의</router-link></td>
+            <td><router-link to="/">상의</router-link></td>
+            <td><router-link to="/">상의</router-link></td>
+            <td><router-link to="/">상의</router-link></td>
+            <td><router-link to="/">상의</router-link></td>
           </tr>
         </tbody>
       </div>
