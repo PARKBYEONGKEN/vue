@@ -3,4 +3,7 @@
     border-style: none;
     border-bottom: solid 1px #cacaca;
     border-collapse: collapse;
+    width: 250px;
+    margin-left: 40px;
+    outline: none;
 }
