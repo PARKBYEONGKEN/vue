@@ -1,0 +1,6 @@
+/* 상단 메뉴바 서치  css */
+.search {
+    border-style: none;
+    border-bottom: solid 1px #cacaca;
+    border-collapse: collapse;
+}
