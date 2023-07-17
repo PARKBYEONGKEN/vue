@@ -1,23 +1,31 @@
 <template>
   <div>
     <banner />
-    <div style="width:1120px; margin:0 auto;">
+    <div style="width:1120px; height: 500px; margin:0 auto;">
       <p class="title" style="text-align: center;">BEST ITEM</p>
       <p class="sub" style="text-align: center;">가장 인기있는 상품입니다</p>
       <fbanner></fbanner>
+
+
     </div>
+    <div style="width:1120px; margin:0 auto;">
+      <type></type>
+    </div>
+
   </div>
 </template>
 
 <script>
 import banner from '../components/banner.vue'
 import fbanner from '../components/fbanner.vue'
+import type from '../components/type.vue'
 
 
 export default {
   components: {
     banner,
-    fbanner
+    fbanner,
+    type
 
   },
   data() {
