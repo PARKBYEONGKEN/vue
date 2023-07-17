@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="table_top" style="width:100%;">
+    <div class="table_top" style="width:100%; ">
       <div class="table_center" style="margin:0 auto; width:30%; padding-top:30px;">
         <tbody>
           <tr>
@@ -63,7 +63,7 @@
 
 
 
-    <hr />
+
 
     <router-view></router-view>
   </div>

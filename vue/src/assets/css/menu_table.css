@@ -48,6 +48,7 @@ ul li {
     line-height: 50px;
     margin: 0 auto;
     text-align: center;
+    z-index: 99;
 }
 
 #menu>ul>li {
@@ -87,8 +88,8 @@ ul li {
 
 
 #menu>ul>li>ul>li:hover {
-    background: orange;
-    transition: ease 1s;
+    background: rgb(255, 255, 255);
+    transition: ease 1.5s;
 }
 
 .image_padding {
