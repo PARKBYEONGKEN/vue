@@ -2,6 +2,17 @@
     <div>
         <input type="file" @change="readFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
     </div>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                발송업체
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in this.data">{{ item }}</tr>
+        </tbody>
+    </table>
 </template>
 
 <script>
@@ -15,7 +26,7 @@ export default {
     },
     data() {
         return {
-
+            data: [],
 
 
 
@@ -29,7 +40,7 @@ export default {
 
             // declare FileReader, temp result
             const reader = new FileReader();
-            let tmpResult = {};
+            let tmpResult = [];
 
             // if you use "this", don't use "function(e) {...}"
             reader.onload = (e) => {
@@ -48,6 +59,11 @@ export default {
                 });
                 this.result = tmpResult.Sheet1;
                 console.log(this.result);
+                console.log(this.result.length);
+                for (var i = 0 < this.result.length; i++ ) { }
+
+
+
             };
             reader.readAsArrayBuffer(file);
 
