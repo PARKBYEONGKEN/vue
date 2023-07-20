@@ -9,7 +9,7 @@
 
     </div>
     <div style="width:1120px; margin:0 auto;">
-      <type></type>
+      <type1></type1>
     </div>
 
   </div>
@@ -18,14 +18,14 @@
 <script>
 import banner from '../components/banner.vue'
 import fbanner from '../components/fbanner.vue'
-import type from '../components/type.vue'
+import type1 from '../components/type1.vue'
 
 
 export default {
   components: {
     banner,
     fbanner,
-    type
+    type1
 
   },
   data() {

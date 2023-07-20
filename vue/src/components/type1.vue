@@ -31,31 +31,25 @@ export default {
     data() {
         return {
             typenum: 1,
-            btncolor: "red",
+
 
 
         };
     },
     methods: {
         numberchange: function (e) {
-            var btns = document.querySelectorAll(".btnbox");
-            btns.forEach(function (btn, i) {
-                console.log(i);
-                if (e.currentTarget == btn) {
-                    btn.classList.add("active");
-                }
-                else {
-                    btn.classList.remove("active");
-                }
-            });
-            console.log(e.currentTarget);
             this.typenum = e;
+            var btnb = document.getElementsByClassName("btnbox");
+            if (event.target.classList[1] === "active") {
+                event.target.classList.remove("active");
+            } else {
+                for (var i = 0; i < btnb.length; i++) {
+                    btnb[i].classList.remove("active");
+                }
+                event.target.classList.add("active");
+            }
         }
-
-
-
     }
-
 }
 
 
@@ -65,10 +59,10 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.typeA li {
+.btnbox {
     float: left;
 
-    width: 14.287%;
+    width: 14.285%;
     background: rgb(225, 239, 241);
     text-align: center;
     cursor: pointer;
@@ -85,7 +79,7 @@ export default {
 }
 
 .btncolor:hover,
-.btnbox .active {
+.btnbox.active {
     background-color: #FFE0C9;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <Carousel v-bind="settings" :breakpoints="breakpoints">
+    <Carousel v-bind="settings" :breakpoints="breakpoints" :autoplay="10000">
         <Slide v-for="slide in 10" :key="slide">
             <div class="carousel__item">{{ slide }}</div>
         </Slide>
