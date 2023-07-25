@@ -3,7 +3,9 @@
         <input type="file" @change="readFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
         <input type="file" @change="readFile2" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
         <button style="margin-right:50px;" v-on:click="cehckfile">미발송업체 찾기</button>
-        <button v-on:click="checkfile2">날짜 추가</button>
+        <button style="margin-right:50px;" v-on:click="checkfile2">날짜 추가</button>
+        <input style="margin-right:50px;" type="file" @change="readFile3"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
     </div>
     <hr>
 
@@ -43,6 +45,8 @@ export default {
             data2: [],
             data3: [],
             data4: [],
+            data10: [],
+            data11: [],
             checkarray: [],
             dataArray: [],
             backup: [],
@@ -128,9 +132,7 @@ export default {
             console.log(this.checkarray.split(','));
             this.dataArray = this.checkarray.split(',');
             this.dataArray = this.backup;
-            const data3 = data1.value.filter((item1) =>
-                data2.value.some((item2) => item2[0] === item1[3])
-            );
+
 
 
         },
@@ -215,7 +217,37 @@ export default {
             };
             reader.readAsArrayBuffer(file);
 
-        }
+        },
+        readFile3(event) {
+            const file = event.target.files[0];
+            const fileName = file.name;
+            const reader = new FileReader();
+            let tmpResult = [];
+
+            reader.onload = (e) => {
+                let data = e.target.result;
+                data = new Uint8Array(data);
+                let excelFile = XLSX.read(data, { type: "array", cellDates: true, dateNF: "dd.mm.yyyy" });
+
+                excelFile.SheetNames.forEach((sheetName) => {
+                    const roa = XLSX.utils.sheet_to_json(excelFile.Sheets[sheetName], { header: 1 });
+                    if (roa.length) tmpResult[sheetName] = roa;
+                });
+
+                // 날짜 형식 변경하여 this.result에 저장
+                this.result = tmpResult.Sheet1.map((row) =>
+                    row.map((cell) => (cell instanceof Date ? this.formatDate(cell) : cell))
+                );
+                console.log(this.result);
+                this.data10 = this.result.toString();
+                console.log(this.data10);
+                console.log(this.data10.split(','));
+                this.data11 = this.data10.split(',');
+                console.log(this.data11);
+            };
+
+            reader.readAsArrayBuffer(file);
+        },
 
 
     }
