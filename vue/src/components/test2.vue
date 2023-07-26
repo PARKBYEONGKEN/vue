@@ -11,14 +11,26 @@
 
     <ul style="width:30%; float:left; margin-right:5%">
         <li style="background-color: black; color:white; font-weight: bold;">발송업체({{ this.data2.length }})개</li>
-        <li v-for=" item in this.data2">{{ item }}</li>
+        <ul style="width:25%; float: left;">
+            <li style="height:50px;" v-for=" item in this.data2">{{ item[0] }}</li>
+        </ul>
+        <ul style="width:10%; float:left;">
+            <li style="height:50px;" v-for=" item2 in this.data2">{{ item2[1] }}</li>
+        </ul>
+        <ul style="width:25%; float:left;">
+            <li style="height:50px;" v-for=" item3 in this.data2">{{ item3[2] }}</li>
+        </ul>
+        <ul style="width:40%; float:left;">
+            <li style="height:50px;" v-for=" item4 in this.data2">{{ item4[3] }}</li>
+        </ul>
+
     </ul>
 
     <ul style="width:30%; float:left; ">
         <li style="background-color: black; color:white; font-weight: bold;">발송되지 않은 업체 ({{ this.dataArray.length }})개
             <button @click="exportToExcel">엑셀 다운</button>
         </li>
-        <li v-for="item in this.dataArray">{{ item }}</li>
+        <li v-for="item in this.dataArray">{{ item[3] }}</li>
     </ul>
 
 
@@ -57,7 +69,7 @@ export default {
 
 
         exportToExcel() {
-            const dataArrayInColumns = this.dataArray.map(item => [item]);
+            const dataArrayInColumns = this.dataArray.map(item => Object.values(item));
             const worksheet = XLSX.utils.aoa_to_sheet(dataArrayInColumns);
 
             // A1 셀에 스타일 적용
@@ -73,7 +85,16 @@ export default {
             worksheet['A1'].t = 's'; // 텍스트로 취급
 
             // A1 셀의 너비 설정 (예시로 15로 설정)
-            worksheet['!cols'] = [{ width: 30 }];
+            const columnWidths = [
+                { width: 13 }, // Width for column A
+                { width: 4 }, // Width for column B
+                { width: 13 }, // Width for column C
+                { width: 40 }, // Width for column C
+                // Add more objects for additional columns as needed
+            ];
+            worksheet['!cols'] = columnWidths;
+
+
 
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
@@ -91,18 +112,23 @@ export default {
         },
 
         cehckfile() {
+            console.log(this.data2)
+            console.log(this.data4)
+            this.dataArray = this.data2.filter(item => !this.data4.some(str => item.includes(str)));
+            console.log(this.dataArray);
+            // const uniqueArray1 = this.data2.filter((value) => !this.data4.includes(value));
+            // const uniqueArray2 = this.data4.filter((value) => !this.data2.includes(value));
+            // const finalUniqueArray = [...uniqueArray1, ...uniqueArray2];
+            // console.log(finalUniqueArray);
+            // this.backup = finalUniqueArray.filter((itemA) => !this.data4.includes(itemA));
+            // console.log(this.backup);
 
-            const uniqueArray1 = this.data2.filter((value) => !this.data4.includes(value));
-            const uniqueArray2 = this.data4.filter((value) => !this.data2.includes(value));
-            const finalUniqueArray = [...uniqueArray1, ...uniqueArray2];
-            console.log(finalUniqueArray);
-            this.backup = finalUniqueArray.filter((itemA) => !this.data4.includes(itemA));
-            console.log(this.backup);
-            this.checkarray = finalUniqueArray.toString();
-            console.log(this.checkarray);
-            console.log(this.checkarray.split(','));
-            this.dataArray = this.checkarray.split(',');
-            this.dataArray = this.backup;
+            // this.checkarray = finalUniqueArray.toString();
+            // console.log(this.checkarray);
+            // console.log(this.checkarray.split(','));
+            // this.dataArray = this.checkarray.split(',');
+            // console.log(this.dataArray);
+            // this.dataArray = this.backup;
 
 
 
@@ -138,10 +164,11 @@ export default {
                 this.result = tmpResult.Sheet1.map((row) =>
                     row.map((cell) => (cell instanceof Date ? this.formatDate(cell) : cell))
                 );
-
-                this.data = this.result.toString();
-                console.log(this.data.split(','));
-                this.data2 = this.data.split(',');
+                this.data2 = this.result;
+                console.log(this.result);
+                // this.data = this.result.toString();
+                // console.log(this.data.split(','));
+                // this.data2 = this.data.split(',');
             };
 
             reader.readAsArrayBuffer(file);
@@ -205,5 +232,6 @@ export default {
 li {
     border: 1px solid #444444;
     text-align: center;
+
 }
 </style>
