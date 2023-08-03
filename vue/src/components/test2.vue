@@ -1,8 +1,15 @@
 <template>
-    <div>
-        <input type="file" @change="readFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-        <input type="file" @change="readFile2" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-        <button style="margin-right:50px;" v-on:click="cehckfile">미발송업체 찾기</button>
+    <div style="height: 80px; padding-top:10px; padding-left:30px;">
+
+        <input style="float:left; margin-left:240px;" type="file" @change="readFile"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+        <button style="margin:0px 350px" v-on:click="cehckfile">미발송업체 찾기</button>
+        <input style="float:right; margin-right:80px" type="file" @change="readFile2"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+        <br>
+        <br>
+
+        <button style="margin-right:50px;" v-on:click="urlchange">사용법 보기</button>
 
     </div>
     <hr>
@@ -38,6 +45,46 @@
         <li style="background-color: black; color:white; font-weight: bold;">실제발송({{ this.data4.length }})개</li>
         <li v-for=" item in this.data4">{{ item }}</li>
     </ul>
+
+    <div class="modal" v-if="this.modalnum === 1">
+        <button style="width:100%" v-on:click="this.modalnum = 2">닫기</button>
+        <hr>
+        <h2>첫번째 파일 첨부 설명</h2>
+
+        <p class="pad">1. 현황표에서 진도율을 확인할려는 날짜의 "교육개강", "~" , "교육종강" , "업체명" 셀의 데이터만을 복사<br>
+        </p>
+
+        <img src="../assets/image/hun1.png" style="height:65%">
+        <p class="pad">2. 엑셀 빈파일을 열어 복사했던 데이터를 A1번셀 부터 붙여넣기 진행</p>
+
+        <img src="../assets/image/hun2.png" style="height:70%">
+        <p class="pad">3. 해당 파일을 저장 ( 해당 파일은 첫번째 파일첨부에 들어갈 파일) </p>
+
+        <img src="../assets/image/hun3.png" style="height:20%">
+        <hr>
+        <h2>두번째 파일 첨부 설명</h2>
+        <p class="pad">1. LMS에서 사이트관리 > 진도율 발송목록에서 당일날짜 입력후 검색 클릭 => 다운로드 버튼 클릭시 엑셀 다운로드됨<br>
+        </p>
+
+        <img src="../assets/image/jin1.png" style="height:65%">
+        <p class="pad">2. 다운받은 엑셀파일에서 사업주 업체명만 나올수있게 B2셀 데이터만 복사 </p>
+
+        <img src="../assets/image/jin2.png" style="height:70%">
+        <p class="pad">3. 엑셀 빈파일을 열어 복사했던 데이터를 A1번셀 부터 붙여넣기 진행 </p>
+
+        <img src="../assets/image/jin3.png" style="height:70%">
+
+        <p class="pad">4. 해당 파일을 저장 ( 해당 파일은 두번째 파일첨부에 들어갈 파일) </p>
+
+        <img src="../assets/image/jin4.png" style="height:20%">
+        <hr>
+        <h2>파일 첨부후 설명</h2>
+        <p class="pad">1. 파일 2개를 모두 첨부 완료시 아래와 같이 첨부했던 파일의 목록이 나타남 </p>
+        <img src="../assets/image/chum1.png" style="height:50%">
+
+        <p class="pad">2. 목록이 두개다 정상적으로 출력시 "미발송업체 찾기" 버튼 클릭 </p>
+        <img src="../assets/image/chum2.png" style="height:30%">
+    </div>
 </template>
 
 <script>
@@ -60,13 +107,16 @@ export default {
             checkarray: [],
             dataArray: [],
             backup: [],
+            modalnum: 2,
 
 
 
         };
     },
     methods: {
-
+        urlchange() {
+            this.modalnum = 1;
+        },
 
         exportToExcel() {
             const dataArrayInColumns = this.dataArray.map(item => Object.values(item));
@@ -160,9 +210,15 @@ export default {
                     if (roa.length) tmpResult[sheetName] = roa;
                 });
 
-                // 날짜 형식 변경하여 this.result에 저장
+                // 날짜 형식 변경하여 this.result에 저장 (날짜 + 1일)
                 this.result = tmpResult.Sheet1.map((row) =>
-                    row.map((cell) => (cell instanceof Date ? this.formatDate(cell) : cell))
+                    row.map((cell) => {
+                        if (cell instanceof Date) {
+                            const updatedDate = new Date(cell.getTime() + 24 * 60 * 60 * 1000);
+                            return this.formatDate(updatedDate);
+                        }
+                        return cell;
+                    })
                 );
                 this.data2 = this.result;
                 console.log(this.result);
@@ -233,5 +289,22 @@ li {
     border: 1px solid #444444;
     text-align: center;
 
+}
+
+.modal {
+    width: 95vw;
+    height: 70vh;
+    overflow: scroll;
+    position: relative;
+    top: 50px;
+    left: 20px;
+    display: block;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.pad {
+    padding: 20px 0px;
+    font-weight: bold;
 }
 </style>
